@@ -30,7 +30,8 @@ function getDirection(str){
 var _objImages = {
     'stick' : 2,
     'flint' : 3,
-    'rock'  : 4
+    'hide'  : 4,
+    'rock'  : 5
 }
 
 // base object

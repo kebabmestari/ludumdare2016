@@ -146,7 +146,7 @@ var GAME = (function(global){
     
     // change level
     function selectLevel(nro){
-        map = mapLoad.loadMap(0);
+        map = mapLoad.loadMap(nro);
         gameOn = true;
         state = 2;
     }
@@ -265,19 +265,9 @@ var GAME = (function(global){
             if(win == shapeobjs.length){
                 alert('Level complete! Borg happy!');
                 gameOn = false;
+                state = 1;
             }
         }
-        
-    }
-    
-    // clear map
-    function clear(){
-        // clear objects
-        gameObjects.length = 0;
-    }
-    
-    // reset lvl
-    function reset(){
         
     }
     
@@ -292,7 +282,6 @@ var GAME = (function(global){
     return {
       init: init,
       update: update,
-      reset: reset,
       getCanvas: function(){
           return can;
       },
