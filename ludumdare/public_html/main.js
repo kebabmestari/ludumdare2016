@@ -17,11 +17,18 @@ var GAME = (function(global){
     var controller;
     var mapLoad;
     
+    
+    // text at top
+    var status;
+    
     // excess space to center map
     var ylijaaX = 0, ylijaaY = 0;
     
     // array for game objects
     var gameObjects = [];
+    
+    // game on flag
+    var gameOn = false;
     
     // current map
     var map = undefined;
@@ -57,7 +64,11 @@ var GAME = (function(global){
         
         // map loading module
         mapLoad = mapLoader();
-        map = mapLoad.loadMap(0);
+        
+        // set font
+        ctx.font = '2em helvetica sans';
+        ctx.textBaseline = 'hanging';
+        ctx.fillStyle = 'black';
         
         // disable drag for IE
         document.onselectstart = function() {
@@ -73,9 +84,14 @@ var GAME = (function(global){
         window.requestAnimationFrame(GAME.update);
         
         // update state to launch menu
-        state = 2;
+        state = 1;
         
         console.log('game initialized');
+    }
+    
+    // update text at the top
+    function updateStatusText(newtxt){
+        status = newtxt;
     }
     
     // recalculate excess space and center map after loading new
@@ -109,6 +125,11 @@ var GAME = (function(global){
     // draw the game
     function drawGame(){
         
+       // draw bg
+       ctx.drawImage(_images['tausta'], 0, 0);
+        
+       reCalculateExcess();
+        
        // draw map
        map.drawMap(ylijaaX, ylijaaY, drawImage);
        
@@ -117,6 +138,17 @@ var GAME = (function(global){
        for(var i=0; i<objlist.length; i++){
            objlist[i].draw(ylijaaX, ylijaaY, drawImage);
        }
+       
+       // draw shape text
+       ctx.fillText(status, 0, 0);
+       
+    }
+    
+    // change level
+    function selectLevel(nro){
+        map = mapLoad.loadMap(0);
+        gameOn = true;
+        state = 2;
     }
     
     // update game
@@ -124,8 +156,6 @@ var GAME = (function(global){
         
         // clear screen
         ctx.clearRect(0, 0, can.width, can.height);
-        
-        reCalculateExcess();
         
         // handle logic based on game state
         switch (state){
@@ -149,11 +179,14 @@ var GAME = (function(global){
     
     // handle menu
     function updateMenu(){
-        
+        ctx.drawImage(_images['tausta1'], 0, 0);
     }
     
     // update game logic and objects
     function updateGame(){
+        
+        if(!gameOn)
+            return;
         
         // get control statuses
         var swipe = controller.getSwipe();
@@ -191,25 +224,50 @@ var GAME = (function(global){
         if(!shape)
             throw 'invalid shape in map';
         
-        // object to start checking from
-        var firstObj = shape[0][0];
-        
-        
-        // iterate through objects
-        // see if a shape has been met
-        var win = m.objects.some(function(){
-            var cond = true;
-            // iterate through shape and ensure every piece is in correct order
-            // otherwise return false
+        // finds the next object
+        // return array of all the objects in shape and their positions
+        function iterateThroughShape(shape){
+            var result = [];
             for(var y=0; y<shape.length; y++){
-                for(var x=0; x<shape[0].length; x++){
-                    
+                for(var x=0; x<shape[y].length; x++){
+                    var tempshape = shape[y][x];
+                    if(tempshape !== 'none' && tempshape !== ''){
+                        result.push({obj: tempshape, x: x, y: y});
+                    }
                 }
             }
-            return cond;
-        });
-        if(win)
-            alert('yay');
+            return result;
+        }
+        
+        // get shape objects
+        var shapeobjs = iterateThroughShape(shape);
+        
+        // iterate through game objects and at each check if they match the positions required
+        for(var i=0; i<m.objects.length; i++){
+            // main object into which others will be compared
+            var mobj = m.objects[i];
+            // count which will count the number of objects in correct positions
+            var win = 1;
+            // go through every other object
+            m.objects.forEach(function(obj){
+                if(obj !== mobj){
+                    // compare the other objects to the positions on the shape
+                    shapeobjs.forEach(function(shapeobj){
+                        // check that shape's object's type is same and relative position is correct
+                        if(     shapeobj.obj == obj.type &&
+                                shapeobj.x == obj.x - mobj.x &&
+                                shapeobj.y == obj.y - mobj.y)
+                                    win++; // increase counter
+                    });
+                }
+            });
+            // if the shape is correct then the count of correctly positioned objects should be the count of objects in shape
+            if(win == shapeobjs.length){
+                alert('Level complete! Borg happy!');
+                gameOn = false;
+            }
+        }
+        
     }
     
     // clear map
@@ -238,7 +296,9 @@ var GAME = (function(global){
       getCanvas: function(){
           return can;
       },
-      reCalcExcess: reCalculateExcess
+      reCalcExcess: reCalculateExcess,
+      updateText: updateStatusText,
+      selectLevel: selectLevel
     };
 })(window);
 

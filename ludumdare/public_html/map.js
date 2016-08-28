@@ -17,6 +17,7 @@ var mapLoader = function(){
             throw 'map not found';
         var nmap = new map(_maps[nro]);
         currmap = nmap;
+        GAME.updateText('Build: ' + currmap.name);
         return currmap;
     }
     
@@ -181,6 +182,20 @@ function map(obj, name){
         }
         return undefined;
     };
+    
+    // returns the object at given tile
+    this.pickUpObjTile = function(x, y){
+        var result;
+        this.objects.some(function(obj){
+            if(obj.x == x && obj.y == y){
+                result = obj;
+                return true;
+            }
+            return false;
+        });
+        if(result)
+            return result;
+    }
     
     console.log('map', name, 'loaded, shape', this.shape);
 }

@@ -17,6 +17,7 @@
 			display: flex;
 			flex-direction: row;
 			justify-content: center;
+                        margin-bottom: 20px;
 		}
 		canvas {
                         width: 640px;
@@ -32,17 +33,98 @@
                   -moz-user-select: none;
                   user-select: none;
                 }
+                /*
+                    Columns for responsive thing
+                */
+                .col-1 {width: 8.33%;}
+                .col-2 {width: 16.66%;}
+                .col-3 {width: 25%;}
+                .col-4 {width: 33.33%;}
+                .col-5 {width: 41.66%;}
+                .col-6 {width: 50%;}
+                .col-7 {width: 58.33%;}
+                .col-8 {width: 66.66%;}
+                .col-9 {width: 75%;}
+                .col-10 {width: 83.33%;}
+                .col-11 {width: 91.66%;}
+                .col-12 {width: 100%;}
+                .levelselectWrapper {
+                    width: 100%;
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: space-around;
+                }
+                .levelselect {
+                    border: 1px dashed black;
+                    border-radius: 10px;
+                    width: 20%;
+                    min-height: 200px;
+                    opacity: 0.5;
+                    transition: all 0.5s;
+                    padding: 10px;
+                    background-color: gold;
+                }
+                .levelselect .name {
+                    text-align: center;
+                }
+                .levelselect:hover{
+                    opacity: 1.0;
+                    border: 1px solid red;
+                }
+                .levelselect .def{
+                    
+                }
+                table {
+                    margin: auto;
+                    table-layout: fixed;
+                    border-collapse: collapse;
+                    width: 30%;
+                    height: 30%;
+                }
+                .levelselect .build td{
+                    border: 1px solid black;
+                    width: 2em;
+                    height: 2em;
+                    text-align: center;
+                    overflow: hidden;
+                }
 	</style>
 </head>
 <body>
     
     <!-- Load assets -->
-    <img class="gamedata" id="tileset" src="asset/tileset.png">
+    <img class="gamedata" id="tileset" src="asset/tileset.jpg">
+    <img class="gamedata" id="tausta" src="asset/tausta.jpg">
+    <img class="gamedata" id="tausta1" src="asset/tausta1.jpg">
     
     <!-- Game field -->
     <div class="wrapper unselectable">
-        <h4>Vidya game</h4>
         <canvas id="game">Your platform does not support HTML5 canvas :(</canvas>
+    </div>
+    
+    <!-- Level selection columns -->
+    <div class="levelselectWrapper">
+        <div class="levelselect" onclick="GAME.selectLevel(0)">
+            <h4 class="name">SPEAR</h4>
+            <p class="def">Borg goes hunting mammoths! Build him a spear to bring it down</p>
+            <table class="build">
+                <tr>
+                    <td></td>
+                    <td>Ro</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>St</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>St</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
     </div>
     
     <!-- Load JS scripts -->
@@ -52,5 +134,6 @@
     <script src="map.js"></script>
     <script src="obj.js"></script>
     <script src="main.js"></script>
+    
 </body>
 </html>

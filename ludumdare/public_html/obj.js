@@ -26,6 +26,13 @@ function getDirection(str){
     return {x: x, y: y};
 }
 
+// object images in tileset
+var _objImages = {
+    'stick' : 2,
+    'flint' : 3,
+    'rock'  : 4
+}
+
 // base object
 var gameObject = function(type, x, y){
     this.x = x || 0;
@@ -35,7 +42,13 @@ var gameObject = function(type, x, y){
     var dir = 'right';
     this.type = type || 'none'; // type of the object! important
     var moving = false;
-    var img = 2;
+    
+    // set image from tileset
+    var img = _objImages[this.type];
+    if(!img){
+        console.error('invalid object image, defaulting');
+        img = 2;
+    }
     
     // checks if a move is valid
     function canMoveTo(x, y){
