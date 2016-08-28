@@ -153,6 +153,8 @@ function map(obj, name){
     this.drawMap = function(sX, sY, callback){
         tiles.forEach(function(tile){
             var pos = tile.getAbsolutePos();
+            // ignore bg
+            if(tile.type == 0) return;
             callback(sX + pos.x, sY + pos.y, _images.tileset,
                 tile.getTilePicPosX(), 0, tile.w, tile.h);
         });

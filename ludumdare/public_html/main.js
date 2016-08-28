@@ -129,6 +129,11 @@ var GAME = (function(global){
        ctx.drawImage(_images['tausta'], 0, 0);
         
        reCalculateExcess();
+       
+       // draw map bg
+       ctx.globalAlpha = 0.7;
+       ctx.fillRect(ylijaaX,ylijaaY, map.w * tile_w, map.h * tile_h);
+       ctx.globalAlpha = 1.0;
         
        // draw map
        map.drawMap(ylijaaX, ylijaaY, drawImage);
