@@ -190,6 +190,11 @@ var GAME = (function(global){
         var shape = _shapes[m.shape];
         if(!shape)
             throw 'invalid shape in map';
+        
+        // object to start checking from
+        var firstObj = shape[0][0];
+        
+        
         // iterate through objects
         // see if a shape has been met
         var win = m.objects.some(function(){
