@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>GAME</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		html, body{
+			width:  99%;
+			height: 99%;
+		}
+		.wrapper {
+			margin: auto;
+			width: 50%;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
+		canvas {
+                        width: 640px;
+                        height: 480px;
+			margin-top: 100px;
+			border: 1px solid black;
+		}
+                img.gamedata{
+                    display: none;
+                }
+                .unselectable {
+                  -webkit-user-select: none;
+                  -moz-user-select: none;
+                  user-select: none;
+                }
+	</style>
+</head>
+<body>
+    
+    <!-- Load assets -->
+    <img class="gamedata" id="tileset" src="asset/tileset.png">
+    
+    <!-- Game field -->
+    <div class="wrapper unselectable">
+        <h4>Vidya game</h4>
+        <canvas id="game">Your platform does not support HTML5 canvas :(</canvas>
+    </div>
+    
+    <!-- Load JS scripts -->
+    <!--<script src="logger.js"></script>-->
+    <script src="essentials.js"></script>
+    <script src="mapJSON.js"></script>
+    <script src="map.js"></script>
+    <script src="obj.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
